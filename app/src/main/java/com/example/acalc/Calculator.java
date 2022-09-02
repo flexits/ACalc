@@ -5,9 +5,9 @@ import androidx.annotation.NonNull;
 import java.math.BigDecimal;
 
 public class Calculator {
-    private BigDecimal leftOperand = 0;
+    private BigDecimal leftOperand = BigDecimal.valueOf(0);
     //here goes the number after its input is finished, or expression evaluation result
-    private BigDecimal rightOperand = 0;
+    private BigDecimal rightOperand = BigDecimal.valueOf(0);
     //here goes the number being input
     private boolean flushROpNeeded = false;
     //if true, the right operand input is finished, and it must be cleared on the next digit input
@@ -17,8 +17,8 @@ public class Calculator {
     private CalcActions selectedAction = CalcActions.NONE;
 
     public void resetBuffers(){
-        leftOperand = 0;
-        rightOperand = 0;
+        leftOperand = BigDecimal.valueOf(0);
+        rightOperand = BigDecimal.valueOf(0);
         flushActNeeded = false;
         flushROpNeeded = false;
         selectedAction = CalcActions.NONE;
@@ -27,11 +27,13 @@ public class Calculator {
     public void pushDigit(int digit){
         //add a digit to the right operand
         if (flushROpNeeded) {
-            rightOperand = digit;
+            rightOperand = BigDecimal.valueOf(digit);
             flushROpNeeded = false;
         }
         else {
-            rightOperand = (rightOperand * 10) + digit;
+            //rightOperand = (rightOperand * 10) + digit;
+            rightOperand = rightOperand.multiply(BigDecimal.valueOf(10));
+            rightOperand = rightOperand.add(BigDecimal.valueOf(digit));
         }
     }
 
@@ -73,11 +75,13 @@ public class Calculator {
     }
 
     public String getLOperand(){
-        return String.valueOf(leftOperand);
+        //return String.valueOf(leftOperand);
+        return leftOperand.stripTrailingZeros().toPlainString();
     }
 
     public String getROperand(){
         //return Double.toString(rightOperand);
-        return String.valueOf(rightOperand);
+        //return String.valueOf(rightOperand);
+        return rightOperand.stripTrailingZeros().toPlainString();
     }
 }
