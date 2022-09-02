@@ -1,47 +1,79 @@
 package com.example.acalc;
 
+import androidx.annotation.NonNull;
+
+import java.math.BigDecimal;
+
 public class Calculator {
-    //buffers
-    private double leftOperand = 0;
-    private double rightOperand = 0;
-    private double result = 0;
+    private BigDecimal leftOperand = 0;
+    //here goes the number after its input is finished, or expression evaluation result
+    private BigDecimal rightOperand = 0;
+    //here goes the number being input
+    private boolean flushROpNeeded = false;
+    //if true, the right operand input is finished, and it must be cleared on the next digit input
+    private boolean flushActNeeded = false;
+    //the flag is set true after an expression evaluation; the left operand contains result
 
     private CalcActions selectedAction = CalcActions.NONE;
 
     public void resetBuffers(){
         leftOperand = 0;
         rightOperand = 0;
+        flushActNeeded = false;
+        flushROpNeeded = false;
         selectedAction = CalcActions.NONE;
-        result = 0;
     }
 
     public void pushDigit(int digit){
-        //add a digit to buffer
-        rightOperand = (rightOperand * 10) + digit;
-    }
-
-    public void selectAction(CalcActions action){
-        if (action == CalcActions.NONE) return;
-        if (selectedAction == CalcActions.NONE){
-            //if no action was previously selected, copy the buffer
-            leftOperand = rightOperand;
+        //add a digit to the right operand
+        if (flushROpNeeded) {
+            rightOperand = digit;
+            flushROpNeeded = false;
         }
         else {
-            //if an action was already selected, evaluate the existing expression first
-            leftOperand = selectedAction.evaluate(leftOperand, rightOperand);
-            //if wasEvaluated
+            rightOperand = (rightOperand * 10) + digit;
         }
+    }
+
+    public void selectAction(@NonNull CalcActions action){
+        if (action == CalcActions.NONE) return;
+
+        if (flushActNeeded){
+            //if there is already a result of a previous expression evaluation
+            //in the left operand, skip all operand exchanges and just memorize the action
+            flushActNeeded = false;
+        } else{
+            //copy the right operand into the left operand and
+            //set the flag to clear the right operand upon a next digit push
+            if (selectedAction == CalcActions.NONE){
+                //if no action was previously selected, just copy the buffer
+                leftOperand = rightOperand;
+            }
+            else {
+                //if an action was already selected, evaluate the existing expression first
+                leftOperand = selectedAction.evaluate(leftOperand, rightOperand);
+            }
+        }
+        flushROpNeeded = true;
         //finally remember the selected action
         selectedAction = action;
+    }
+
+    public void executeFunc(@NonNull CalcFunctions func){
+        rightOperand = func.evaluate(rightOperand);
     }
 
     public void insertDecimalSepr(){
         return;
     }
 
-    public double evaluate(){
-        if (selectedAction == CalcActions.NONE) return rightOperand;
-        else return leftOperand = selectedAction.evaluate(leftOperand, rightOperand);
+    public void evaluate(){
+        leftOperand = selectedAction.evaluate(leftOperand, rightOperand);
+        flushActNeeded = true;
+    }
+
+    public String getLOperand(){
+        return String.valueOf(leftOperand);
     }
 
     public String getROperand(){

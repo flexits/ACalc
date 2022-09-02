@@ -23,6 +23,7 @@
         android:layout_height="80dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:onClick="btnEvalPress"
         android:text="="
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnActAdd" />
@@ -65,6 +66,7 @@
         android:layout_height="80dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:onClick="btnAddPress"
         android:text="+"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnActSub" />
@@ -86,6 +88,7 @@
         android:layout_height="80dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:onClick="btnSubPress"
         android:text="-"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnActMlt" />
@@ -129,6 +132,7 @@
         android:layout_height="80dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:onClick="btnMltPress"
         android:text="x"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnActDiv" />
@@ -184,6 +188,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginEnd="16dp"
+        android:onClick="btnDivPress"
         android:text="/"
         android:textSize="24sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/btnFsine"
@@ -195,6 +200,7 @@
         android:layout_height="80dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="36dp"
+        android:onClick="btnSinPress"
         android:text="sin"
         android:textAlignment="center"
         android:textSize="24sp"

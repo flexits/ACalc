@@ -17,65 +17,91 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tvNum = findViewById(R.id.tvNumbr);
         calc = new Calculator();
-        updateUI();
-    }
-
-    private void updateUI(){
         tvNum.setText(calc.getROperand());
     }
 
     public void btn1Press(View view){
         calc.pushDigit(1);
-        updateUI();
+        tvNum.setText(calc.getROperand());
     }
 
     public void btn2Press(View view){
         calc.pushDigit(2);
-        updateUI();
+        tvNum.setText(calc.getROperand());
     }
 
     public void btn3Press(View view){
         calc.pushDigit(3);
-        updateUI();
+        tvNum.setText(calc.getROperand());
     }
 
     public void btn4Press(View view){
         calc.pushDigit(4);
-        updateUI();
+        tvNum.setText(calc.getROperand());
     }
 
     public void btn5Press(View view){
         calc.pushDigit(5);
-        updateUI();
+        tvNum.setText(calc.getROperand());
     }
 
     public void btn6Press(View view){
         calc.pushDigit(6);
-        updateUI();
+        tvNum.setText(calc.getROperand());
     }
 
     public void btn7Press(View view){
         calc.pushDigit(7);
-        updateUI();
+        tvNum.setText(calc.getROperand());
     }
 
     public void btn8Press(View view){
         calc.pushDigit(8);
-        updateUI();
+        tvNum.setText(calc.getROperand());
     }
 
     public void btn9Press(View view){
         calc.pushDigit(9);
-        updateUI();
+        tvNum.setText(calc.getROperand());
     }
 
     public void btn0Press(View view){
         calc.pushDigit(0);
-        updateUI();
+        tvNum.setText(calc.getROperand());
     }
 
     public void btnCPress(View view){
         calc.resetBuffers();
-        updateUI();
+        tvNum.setText(calc.getROperand());
+    }
+
+    public void btnAddPress(View view){
+        calc.selectAction(CalcActions.ADD);
+        tvNum.setText(calc.getLOperand());
+    }
+
+    public void btnSubPress(View view){
+        calc.selectAction(CalcActions.SUBTRACT);
+        tvNum.setText(calc.getLOperand());
+    }
+
+    public void btnMltPress(View view){
+        calc.selectAction(CalcActions.MULTIPLY);
+        tvNum.setText(calc.getLOperand());
+    }
+
+    public void btnDivPress(View view){
+        calc.selectAction(CalcActions.DIVIDE);
+        tvNum.setText(calc.getLOperand());
+    }
+
+    public void btnEvalPress(View view){
+        calc.evaluate();
+        tvNum.setText(calc.getLOperand());
+    }
+
+    public void btnSinPress(View view){
+        calc.executeFunc(CalcFunctions.SINE);
+        tvNum.setText(calc.getROperand());
     }
 }
