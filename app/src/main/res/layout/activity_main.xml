@@ -29,11 +29,12 @@
         app:layout_constraintTop_toBottomOf="@+id/btnActAdd" />
 
     <Button
-        android:id="@+id/btnSeparator"
+        android:id="@+id/btnSpr"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:onClick="btnSprPress"
         android:text="."
         app:layout_constraintStart_toEndOf="@+id/btn0"
         app:layout_constraintTop_toBottomOf="@+id/btn3" />
