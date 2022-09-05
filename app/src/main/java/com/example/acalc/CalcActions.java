@@ -1,6 +1,7 @@
 package com.example.acalc;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /*
 Operations that require two operands are described here.
@@ -32,7 +33,7 @@ public enum CalcActions {
         }
     },
     DIVIDE {
-        public BigDecimal evaluate(BigDecimal op1, BigDecimal op2){ return op1.divide(op2); }
+        public BigDecimal evaluate(BigDecimal op1, BigDecimal op2){ return op1.divide(op2, 8, RoundingMode.HALF_UP); }
         public String getString(BigDecimal op2){
             return " / " + op2.stripTrailingZeros().toPlainString();
         }

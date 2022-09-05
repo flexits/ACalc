@@ -53,7 +53,21 @@ public class Calculator {
     //stores the history of calculations
     private String history = "\0";
 
-    public void resetBuffers(){
+    //Division by zero workaround
+    private boolean isZeroDivDetected = false;
+    private boolean checkZeroDiv(){
+        isZeroDivDetected = ((selectedAction == CalcActions.DIVIDE) && rightOperand.equals(BigDecimal.valueOf(0)));
+        return isZeroDivDetected;
+    }
+
+    //when rightOperand input was finished, set the flag and clear the fractional mode
+    //Called on action, function and evaluate buttons press.
+    private void rightOperandInputFinished(){
+        flushROpNeeded = true;
+        fractDivider = 0;
+    }
+
+    public void clearBuffers(){
         leftOperand = BigDecimal.valueOf(0);
         rightOperand = BigDecimal.valueOf(0);
         fractDivider = 0;
@@ -64,11 +78,11 @@ public class Calculator {
     }
 
     public void pushDigit(int digit){
-
         if (flushROpNeeded) {
             //clear the contents before adding a digit
             rightOperand = BigDecimal.valueOf(digit);
             flushROpNeeded = false;
+            fractDivider = 0;
         }
         else {
             //add a digit to the right operand
@@ -101,18 +115,23 @@ public class Calculator {
             }
             else {
                 //if an action was already selected, evaluate the existing expression first
-                leftOperand = selectedAction.evaluate(leftOperand, rightOperand);
-                history += selectedAction.getString(rightOperand);
+                if (checkZeroDiv()){
+                    clearBuffers();
+                    return;
+                }else{
+                    leftOperand = selectedAction.evaluate(leftOperand, rightOperand);
+                    history += selectedAction.getString(rightOperand);
+                }
             }
         }
-        flushROpNeeded = true;
+        rightOperandInputFinished();
         //finally remember the selected action
         selectedAction = action;
     }
 
     public void executeFunc(@NonNull CalcFunctions func){
         rightOperand = func.evaluate(rightOperand);
-        fractDivider = 0;
+        rightOperandInputFinished();
     }
 
     public void insertDecimalSepr(){
@@ -121,10 +140,15 @@ public class Calculator {
     }
 
     public void evaluate(){
-        leftOperand = selectedAction.evaluate(leftOperand, rightOperand);
-        history += selectedAction.getString(rightOperand);
+        if (checkZeroDiv()){
+            clearBuffers();
+            return;
+        }else{
+            leftOperand = selectedAction.evaluate(leftOperand, rightOperand);
+            history += selectedAction.getString(rightOperand);
+        }
         flushActNeeded = true;
-        fractDivider = 0;
+        rightOperandInputFinished();
     }
 
     public String getLOperand(){
@@ -137,5 +161,11 @@ public class Calculator {
 
     public String getHistory(){
         return history;
+    }
+
+    public boolean checkAndResetZeroDivFlag(){
+        boolean flag = isZeroDivDetected;
+        isZeroDivDetected = false;
+        return flag;
     }
 }

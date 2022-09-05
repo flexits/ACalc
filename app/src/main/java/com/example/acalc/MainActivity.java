@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final String zeroDivMsg = "Div/0!";
+
     private TextView tvNum;
     private TextView tvHst;
     private Calculator calc;
@@ -23,7 +25,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateDisplay(String number) {
-        tvNum.setText(number);
+        if (calc.checkAndResetZeroDivFlag()){
+            tvNum.setText(zeroDivMsg);
+        } else{
+            tvNum.setText(number);
+        }
         tvHst.setText(calc.getHistory());
     }
 
@@ -83,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btnCPress(View view){
-        calc.resetBuffers();
+        calc.clearBuffers();
         updateDisplay(calc.getROperand());
     }
 
