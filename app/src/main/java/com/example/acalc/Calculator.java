@@ -79,22 +79,19 @@ public class Calculator {
 
     public void pushDigit(int digit){
         if (flushROpNeeded) {
-            //clear the contents before adding a digit
-            rightOperand = BigDecimal.valueOf(digit);
             flushROpNeeded = false;
-            fractDivider = 0;
+            //clear the contents before adding a digit
+            rightOperand = BigDecimal.valueOf(0);
         }
-        else {
-            //add a digit to the right operand
-            if (fractDivider == 0){
-                //the integer part of the operand is being input
-                rightOperand = rightOperand.multiply(BigDecimal.valueOf(10)).add(BigDecimal.valueOf(digit));
-            } else{
-                //the fractional part of the operand is being input
-                BigDecimal fractionPart = BigDecimal.valueOf(digit).divide(BigDecimal.valueOf(Math.pow(10, fractDivider)));
-                rightOperand = rightOperand.add(fractionPart);
-                fractDivider++;
-            }
+        //add a digit to the right operand
+        if (fractDivider == 0){
+            //the integer part of the operand is being input
+            rightOperand = rightOperand.multiply(BigDecimal.valueOf(10)).add(BigDecimal.valueOf(digit));
+        } else{
+            //the fractional part of the operand is being input
+            BigDecimal fractionPart = BigDecimal.valueOf(digit).divide(BigDecimal.valueOf(Math.pow(10, fractDivider)));
+            rightOperand = rightOperand.add(fractionPart);
+            fractDivider++;
         }
     }
 
